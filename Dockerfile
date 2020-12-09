@@ -4,7 +4,7 @@ FROM golang:1.14
 WORKDIR /usr/app
 ADD . .
 
-RUN apt-get -y update && apt-get -y install imagemagick
+RUN apt-get -y update && apt-get -y install imagemagick && chmod +x /usr/app/scripts/*
 
 ENV PATH="$PATH:/usr/app/scripts"
 
