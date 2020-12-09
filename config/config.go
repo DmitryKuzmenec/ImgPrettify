@@ -7,16 +7,16 @@ import (
 
 // Config - struct of config
 type Config struct {
-	Mysql struct {
-		User     string
-		Password string
-		Host     string
-		Port     string
-		Database string
-	} `envconfig:"MYSQL"`
-	Log struct {
-		Level string
-	} `envconfig:"LOG"`
+	// Mysql struct {
+	// 	User     string
+	// 	Password string
+	// 	Host     string
+	// 	Port     string
+	// 	Database string
+	// } `envconfig:"MYSQL"`
+	// Log struct {
+	// 	Level string
+	// } `envconfig:"LOG"`
 }
 
 // Init - get config
