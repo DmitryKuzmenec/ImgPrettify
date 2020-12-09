@@ -34,20 +34,39 @@ func (r *Repo) Pretty(src multipart.File) (*os.File, error) {
 	if _, err = io.Copy(dst, src); err != nil {
 		return nil, err
 	}
-	convertedFileName := dst.Name() + "_new"
-	cmd := exec.Command("convert", "-fuzz", "20%", "-trim", dst.Name(), convertedFileName)
+	srcFileName := dst.Name()
+
 	var out bytes.Buffer
+
+	// trim
+	convertedFileName := srcFileName + "_+"
+	cmd := exec.Command("convert", "-fuzz", "20%", "-trim", srcFileName, convertedFileName)
 	cmd.Stderr = &out
 	err = cmd.Run()
 	if err != nil {
 		log.Errorf("[repositories] exec.Command: %s (%s)", err, out.String())
 		return nil, err
 	}
+	srcFileName = convertedFileName
+
+	// scripts from http://www.fmwconcepts.com/imagemagick
+
+	// autocolor
+	convertedFileName = srcFileName + ".jpg"
+	cmd = exec.Command("autocolor", "-m", "recolor", "-c", "separate", srcFileName, convertedFileName)
+	cmd.Stderr = &out
+	err = cmd.Run()
+	if err != nil {
+		log.Errorf("[repositories] scripts/autocolor: %s (%s)", err, out.String())
+		return nil, err
+	}
+
 	file, err := os.Open(convertedFileName)
 	if err != nil {
 		log.Errorf("[repositories] os.Open: %s", err)
 		return nil, err
 	}
 	defer file.Close()
+
 	return file, nil
 }

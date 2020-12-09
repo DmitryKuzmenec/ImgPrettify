@@ -6,6 +6,8 @@ ADD . .
 
 RUN apt-get -y update && apt-get -y install imagemagick
 
+ENV PATH="$PATH:/usr/app/scripts"
+
 RUN make build
 RUN make test
 RUN make
